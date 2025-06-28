@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <title>문화유산법령 첫페이지</title>
+    <!-- ✅ 여기에 Firebase SDK 코드 붙여넣기 -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
+
+    <!-- 구글 폰트 추가 -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- 부트스트랩 CSS 추가 -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- 부트스트랩 JS 및 제이쿼리 추가 -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- 스타일 정의 -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+
+        * {
+            font-family: "Gowun Dodum", sans-serif;
+            color: black;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 8px 10px 10px 10px;
+            /* 상단만 0 */
+            border-radius: 5px;
+            /* 모서리 둥글게 (선택) */
+            background-color: #edecec;
+            /* 옅은 회색 #fcfcfc, #f4f4f4*/
+            margin-top: 20px;
+            /* 수치를 늘리면 더 많이 띄워집니다 */
+            margin-bottom: 20px;
+            /* 또는 padding-bottom: 20px; */
+        }
+
+        .container h2 {
+            margin-bottom: 10px;
+            /* 제목과 아래 요소 간격 */
+            font-size: 1.5rem;
+            /* 예: 1.5rem = 24px 정도 */
+            font-weight: 580;
+            /* 또는 normal, bold, 500, 300 등 수치 가능 */
+        }
+
+        .title-section {
+            text-align: center;
+            padding-top: 25px;
+            /* 기본값보다 더 띄우기 */
+            margin-bottom: 25px;
+            /* 또는 20~24px 등으로 조절 */
+        }
+
+        .gichul-button-wrapper {
+            margin-left: 15px;
+            /* 장 제목 시작선 맞추기 */
+            margin-bottom: 6px;
+            /* 아래 제1장과 간격 */
+        }
+
+        .btn-gichul {
+            display: inline-block;
+            background-color: #dededf;
+            /* 파란색 배경 */
+            color: rgb(26, 25, 25);
+            padding: 5px 5px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1.0rem;
+            font-weight: 500;
+        }
+
+        .law-section {
+            /*border: 1px solid #ccc;*/
+            padding: 20px;
+            padding-left: 0;
+            margin-bottom: 10px;
+            /* 여기 수치를 줄이면 간격이 좁아집니다 */
+            /*background-color: #f9f9f9;*/
+            border-radius: 1px;
+            margin-left: 15px;
+            /* 또는 padding-left: 20px; */
+        }
+
+        .law-section h3 {
+            font-size: 1.10rem;
+            font-weight: normal;
+            /* bold → normal 로 변경 */
+            margin-bottom: 5x;
+            /* 간격 조절: 숫자 ↑ 늘리면 더 넓어짐 */
+        }
+
+        .law-section a {
+            margin-right: 4px;
+
+            padding: 2px 5px;
+            /* 상하 좌우 여백 줄이기 */
+            border: 1.5px solid #292828;
+            /* 테두리 색 → 진한 회색 */
+            border-radius: 5px;
+            text-decoration: none;
+            color: #333;
+            /* 글자색 → 더 부드러운 어두운 회색 */
+            font-size: 1.0rem;
+            /* 글자 크기 줄이기 */
+        }
+
+        .law-section a:hover {
+            background-color: #f4f2f2;
+            /* 연한 회색 배경 */
+            color: black;
+        }
+
+        .law-section:last-child {
+            margin-bottom: 60px;
+            /* 원하는 만큼 간격 조절 */
+        }
+
+        .bottom-box {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 50px;
+            border-radius: 5px;
+        }
+
+        .final-locked {
+            pointer-events: none;
+            opacity: 0.4;
+            cursor: default;
+        }
+
+        .btn-final {
+            float: right;
+            background-color: #edecec;
+            color: #fff;
+            border: 2px solid #555;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-weight: 900;
+            /* 굵게 또는 숫자로 조절 가능: 500, 600, 700 등 */
+            font-size: 1rem;
+            /* 기본 크기 (약 16px) */
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <!-- 하단 법령 영역 (bottom-box) 시작 -->
+        <div class="bottom-box">
+            <div class="title-section">
+                <h2 style="margin-bottom: 10px; font-size: 1.5rem; font-weight: normal;">
+                    문화유산의 보존 및 활용에 관한 법률 (문화유산법)
+                </h2>
+                <p style="margin-bottom: 25px; color: #007bff;">
+                    [시행 2025. 2. 14.] [법률 제20286호, 2024. 2. 13., 일부개정]
+                </p>
+            </div>
+            <!-- 기출 문제 버튼 (법령 제목과 제1장 사이에 배치) -->
+            <div class="gichul-button-wrapper">
+                <a href="gichu1.html" class="btn-gichul" target="_blank">
+                    🔍 2015 ~ 2025 기출 문제
+                </a>
+            </div>
+            <!-- 장별 템플릿 반복 시작 -->
+            <div class="law-section">
+                <h3>문화유산법 (제1장. 제2장)</h3>
+                <a href="https://youtu.be/Lsh375izj1w" class="btn-youtube" target="_blank">▶ AI음성 법조문 유튜브 동영상 🎧</a>
+                <a href="ch1.html" class="btn-content " target="_blank">📝 예비 모의고사</a>
+                <a href="#" class="btn-final" data-toggle="modal" data-target="#modalSiljeon"
+                    style="float: right; margin-left: 12px; min-width: 160px;">🎯 실전 모의고사 &nbsp;&nbsp;💯</a>
+            </div>
+            <div class="law-section">
+                <h3>문화유산법 (제3장)</h3>
+                <a href="https://youtu.be/ZxCf7Y7PvvM" class="btn-youtube" target="_blank"> ▶ AI음성 법조문 유튜브 동영상 🎧</a>
+                <a href="ch2.html" class="btn-content " target="_blank">📝 예비 모의고사</a>
+            </div>
+            <div class="law-section">
+                <h3>문화유산법 (제3장의2. 제3장의3)</h3>
+                <a href="https://youtu.be/42g3Uy_M1ME" class="btn-youtube" target="_blank"> ▶ AI음성 법조문 유튜브 동영상 🎧</a>
+                <a href="ch3.html" class="btn-content " target="_blank">📝 예비 모의고사</a>
+            </div>
+            <div class="law-section">
+                <h3>문화유산법 (제4장. 제1절. 제2절 – 제39조)</h3>
+                <a href="https://youtu.be/ggjN4e3Ido8" class="btn-youtube" target="_blank"> ▶ AI음성 법조문 유튜브 동영상 🎧</a>
+                <a href="ch4.html" class="btn-content " target="_blank">📝 예비 모의고사</a>
+            </div>
+            <div class="law-section">
+                <h3>문화유산법 (제4장. 제40조-. 제3절. 제4절)</h3>
+                <a href="https://youtu.be/3uv7N13gX8Y" class="btn-youtube" target="_blank"> ▶ AI음성 법조문 유튜브 동영상 🎧</a>
+                <a href="ch5.html" class="btn-content " target="_blank">📝 예비 모의고사</a>
+            </div>
+            <div class="law-section">
+                <h3>문화유산법 (제6장. 제7장. 제8장. 제9장)</h3>
+                <a href="https://youtu.be/Da0Bcg5bcaw" class="btn-youtube" target="_blank"> ▶ AI음성 법조문 유튜브 동영상 🎧</a>
+                <a href="ch6.html" class="btn-content " target="_blank">📝 예비 모의고사</a>
+            </div>
+            <div class="law-section">
+                <h3>문화유산법 (제10장. 제10장의2)</h3>
+                <a href="https://youtu.be/a8DB_4oD1cQ" class="btn-youtube" target="_blank"> ▶ AI음성 법조문 유튜브 동영상 🎧</a>
+                <a href="ch7.html" class="btn-content " target="_blank">📝 예비 모의고사</a>
+            </div>
+            <div class="law-section">
+                <h3>문화유산법 (제11장. 제12장)</h3>
+                <a href="https://youtu.be/FkTao9Py_ZI" class="btn-youtube" target="_blank"> ▶ AI음성 법조문 유튜브 동영상 🎧</a>
+                <a href="ch8.html" class="btn-content " target="_blank">📝 예비 모의고사</a>
+                <a href="#" class="btn-content" data-toggle="modal" data-target="#modalGonghap">👉 예비 모의고사 종합</a>
+            </div>
+            <!-- 장별 템플릿 반복 끝 -->
+        </div>
+
+        <!-- 종합 모의고사 모달 -->
+        <div class="modal fade" id="modalGonghap" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document" style="max-width: 550px;">
+                <div class="modal-content"
+                    style="padding: 30px; border: 3px solid rgb(88, 87, 87); border-radius: 10px; box-shadow: 0 0 12px rgba(0,0,0,0.1);">
+                    <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">
+                        🎯 [문화유산법령] 종합 모의고사 암호키 확인 !
+                        <input type="text" id="gonghapKey" placeholder="암호 입력"
+                            style="width: 70px; height: 30px; font-size: 14px; padding: 2px 6px; margin-left: 25px; margin-right: 6px; background-color: white; border: 2px solid #888; color: black;" />
+                        <button onclick="checkGonghapKey()"
+                            style="width: 50px; height: 30px; font-size: 14px; padding: 2px 6px; background-color: white; border: 2px solid #888; color: black;">
+                            확인
+                        </button>
+                    </div>
+                    <div style="font-size: 14px; margin-bottom: 30px; line-height: 1.5;" >
+                        - 처음 아래, 암호 키 취득자 위                        
+                    </div>
+
+                    <!-- 질문 1 -->
+                    <div style="margin-top: 3px; margin-bottom: 5px;">
+                        <label style="font-weight: normal; font-size: 16px; margin-top: 6px;">1. 문화유산은 (<span
+                                style="display:inline-block; min-width:20px;">&nbsp;</span>)개의 종류로 구분된다.</label>
+                        <input type="text" id="gonghapQ1" class="form-control form-control-sm" style="width: 140px;">
+                    </div>
+
+                    <!-- 질문 2 -->
+                    <div style="margin-bottom: 10px;">
+                        <label style="font-weight: normal; font-size: 16px; margin-top: 6px;">2. 임시지정은 중요문화유산으로 임시지정한
+                            날부터 (<span style="display:inline-block; min-width:20px;">&nbsp;</span>)개월 동안만 효력이
+                            있다.</label>
+                        <input type="text" id="gonghapQ2" class="form-control form-control-sm" style="width: 140px;">
+                    </div>
+
+                    <!-- 질문 3 -->
+                    <div style="margin-bottom: 10px;">
+                        <label style="font-weight: normal; font-size: 16px; margin-top: 6px;">3. 일반동산문화유산의 해당기준 중 제작연대는
+                            "(<span style="display:inline-block; min-width:20px;">&nbsp;</span>)년 이전에 제작되었을
+                            것"이다.</label>
+                        <input type="text" id="gonghapQ3" class="form-control form-control-sm" style="width: 140px;">
+                    </div>
+                    <!-- 질문 4 -->
+                    <div style="margin-bottom: 10px;">
+                        <label style="font-weight: normal; font-size: 16px; margin-top: 6px;">4. 이 법에서 행정 제재처분의 효과는 그
+                            처분기간이 끝난 날부터 (<span style="display:inline-block; min-width:20px;">&nbsp;</span>)년간 해당
+                            문화유산매매업의 양수인에게 승계된다.</label>
+                        <input type="text" id="gonghapQ4" class="form-control form-control-sm" style="width: 140px;">
+                    </div>
+                    <!-- 질문 5 -->
+                    <div style="margin-bottom: 10px;">
+                        <label style="font-weight: normal; font-size: 16px; margin-top: 6px;">5. 지정문화유산으로 지정된 구역의 경계표시를
+                            고의로 손괴하는 행위는 <br>(<span style="display:inline-block; min-width:20px;">&nbsp;</span>) 방해 등의
+                            죄에 해당하여 2년 이하의 징역이나 2천만원 이하의 벌금에 처해진다.</label>
+                        <input type="text" id="gonghapQ5" class="form-control form-control-sm" style="width: 140px;">
+                    </div>
+                    <!-- 버튼 + 결과 문구 일렬 배치 -->
+                    <div style="display: flex; align-items: center; gap: 12px; margin-top: 20px;">
+                        <button onclick="checkGonghap()" class="btn btn-primary"
+                            style="width: 60px; height: 32px; font-size: 13px; padding: 3px 10px; line-height: 1.2;">
+                            확인
+                        </button>
+                        <p id="gonghapResult" style="margin: 0; font-weight: bold;">
+                            귀하의 종합 모의고사 암호키는
+                            [<span id="gonghapKeySpan" style="display: inline-block; padding: 0 8px;"></span>]입니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 실전 모의고사 모달 -->
+        <div class="modal fade" id="modalSiljeon" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document" style="max-width: 550px;">
+                <div class="modal-content"
+                    style="padding: 30px; border: 3px solid rgb(88, 87, 87); border-radius: 10px; box-shadow: 0 0 12px rgba(0,0,0,0.1);">
+                    <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">
+                        🎯 <실전 모의고사> 암호키 확인 !
+                            <input type="text" id="siljeonKey" placeholder="암호 입력"
+                                style="width: 70px; height: 30px; font-size: 14px; padding: 2px 6px; margin-left: 25px; margin-right: 6px; background-color: white; border: 2px solid #888; color: black;" />
+                            <button onclick="checkSiljeon()"
+                                style="width: 50px; height: 30px; font-size: 14px; padding: 2px 6px; background-color: white; border: 2px solid #888; color: black;">
+                                확인
+                            </button>
+                    </div>
+                    <div style="font-size: 14px; margin-bottom: 30px; line-height: 1.5;" >
+                        - 처음 아래, 암호 키 취득자 위                        
+                    </div>
+                    <!-- 질문 1 -->
+                    <div style="margin-top: 3px; margin-bottom: 5px;">
+                        <label style="font-weight: normal; font-size: 16px; margin-top: 6px;">1. 귀하의 종합 모의고사 8개 암호키 중 숫자를 입력하세요.</label>
+                        <input type="text" id="siljeonQ1" class="form-control form-control-sm" style="width: 140px;">
+                    </div>
+
+                    <!-- 질문 2 -->
+                    <div style="margin-bottom: 10px;">
+                        <label style="font-weight: normal; font-size: 16px; margin-top: 6px;">2. 문화유산 방재의 날은 매년 2월 (<span style="display:inline-block; min-width:20px;">&nbsp;</span>)일이다,</label>
+                        <input type="text" id="siljeonQ2" class="form-control form-control-sm" style="width: 140px;">
+                    </div>
+
+                    <!-- 질문 3 -->
+                    <div style="margin-bottom: 10px;">
+                        <label style="font-weight: normal; font-size: 16px; margin-top: 6px;">3. 귀하의 목표 점수는? (<span style="display:inline-block; min-width:20px;">&nbsp;</span>)점 만점 ! </label>
+                        <input type="text" id="siljeonQ3" class="form-control form-control-sm" style="width: 140px;">
+                    </div>
+
+                    <!-- 버튼 + 결과 문구 일렬 배치 -->
+                    <div style="display: flex; align-items: center; gap: 12px; margin-top: 20px;">
+                        <button onclick="checkSiljeon()" class="btn btn-primary"
+                            style="width: 60px; height: 32px; font-size: 13px; padding: 3px 10px; line-height: 1.2;">
+                            확인
+                        </button>
+                        <p id="siljeonResult" style="margin: 0; font-weight: bold;">
+                            귀하의 실전 모의고사 암호키는
+                            [<span id="gonghapKeySpan" style="display: inline-block; padding: 0 8px;"></span>]입니다.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <script>
+            function checkGonghapKey() {
+                const input = document.getElementById("gonghapKey").value.trim();
+                // ✅ 원하는 암호키로 변경하세요
+                if (input === "F") {
+                    window.location.href = "Gonghap1.html";
+                } else {
+                    alert("암호키가 올바르지 않습니다.");
+                }
+            }
+        </script>
+        <script>
+            function checkGonghap() {
+                const q1 = document.getElementById("gonghapQ1").value.trim();
+                const q2 = document.getElementById("gonghapQ2").value.trim();
+                const q3 = document.getElementById("gonghapQ3").value.trim();
+                const q4 = document.getElementById("gonghapQ4").value.trim();
+                const q5 = document.getElementById("gonghapQ5").value.trim();
+
+                const resultP = document.getElementById("gonghapResult");
+
+                if (q1 === "3" && q2 === "6" && q3 === "1945" && q4 === "1" && q5 === "관리행위") {
+                    resultP.innerHTML = `귀하의 종합 모의고사 암호키는 <strong>[<span style="color: blue;  padding: 0 8px; display: inline-block;">F</span>]</strong>입니다.`;
+                } else {
+                    resultP.innerHTML = `❌ 다시 확인하세요.`;
+                }
+            }
+
+        </script>
+        <script>
+            function checkSiljeonKey() {
+                const input = document.getElementById("siljeonKey").value.trim();
+
+                // ✅ 원하는 암호키로 변경하세요
+                if (input === "100.") {
+                    window.location.href ="https://blog.naver.com/lhj5268/223914822019"; // 실제 실전 첫페이지로 링크
+                } else {
+                    alert("암호키가 올바르지 않습니다.");
+                }
+            }
+        </script>
+        <script>
+            function checkSiljeon() {
+                const q1 = document.getElementById("siljeonQ1").value.trim();
+                const q2 = document.getElementById("siljeonQ2").value.trim();
+                const q3 = document.getElementById("siljeonQ3").value.trim();
+
+                const resultP = document.getElementById("siljeonResult");
+
+                if (q1 === "100" && q2 === "10" && q3 === "100") {
+                    resultP.innerHTML = `귀하의 실전 모의고사 암호키는 <strong>[<span style="color: blue;  padding: 0 8px; display: inline-block;">100 . </span>]</strong>입니다.`;
+                } else {
+                    resultP.innerHTML = `❌ 다시 확인하세요.`;
+                }
+            }
+
+        </script>
+
+</body>
+
+</html>
