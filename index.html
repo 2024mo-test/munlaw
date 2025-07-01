@@ -223,8 +223,28 @@
                 <a href="#" class="btn-content" data-toggle="modal" data-target="#modalGonghap">👉 예비 모의고사 종합</a>
             </div>
             <!-- 장별 템플릿 반복 끝 -->
+            <!-- 좌우 이동 버튼 -->
+            <div style="display: flex; justify-content: space-between; margin-top: 40px;">
+                <button onclick="goToPrev()" style="
+                width: 80px;
+                height: 35px;
+                font-size: 15px;
+                padding: 6px 10px;
+                background-color: #e8e7e7;
+                border: 1px solid #e8e7e7; /* 배경색과 동일하게 */
+                border-radius: 6px;">
+                    ← 이전
+                </button>
+            </div>
         </div>
+        <script>
+            function goToPrev() {
+                // 이전 페이지 링크로 이동
+                window.location.href = "https://blog.naver.com/lhj5268/223861816225";  // ← 원하는 URL로 교체
+            }
 
+        </script>
+        
         <!-- 종합 모의고사 모달 -->
         <div class="modal fade" id="modalGonghap" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document" style="max-width: 550px;">
@@ -302,7 +322,7 @@
                         🎯 <실전 모의고사> 암호키 확인 !
                             <input type="text" id="siljeonKey" placeholder="암호 입력"
                                 style="width: 70px; height: 30px; font-size: 14px; padding: 2px 6px; margin-left: 25px; margin-right: 6px; background-color: white; border: 2px solid #888; color: black;" />
-                            <button onclick="checkSiljeon()"
+                            <button onclick="checkSiljeonKey()"
                                 style="width: 50px; height: 30px; font-size: 14px; padding: 2px 6px; background-color: white; border: 2px solid #888; color: black;">
                                 확인
                             </button>
@@ -336,7 +356,7 @@
                         </button>
                         <p id="siljeonResult" style="margin: 0; font-weight: bold;">
                             귀하의 실전 모의고사 암호키는
-                            [<span id="gonghapKeySpan" style="display: inline-block; padding: 0 8px;"></span>]입니다.
+                            [<span id="siljeonKeySpan" style="display: inline-block; padding: 0 8px;"></span>]입니다.
                         </p>
                     </div>
                 </div>
